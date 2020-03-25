@@ -1,5 +1,5 @@
-const {validateApplicant, validateSearchQuery} = require('../models/applicant');
-const {User, Applicant} = require('../models/index');
+const {validateApplicant, validateSearchQuery} = require('../database/models/applicant');
+const {User, Applicant} = require('../database/models/index');
 const client = require('../redis/redis');
 
 exports.update = async (req, res) => {

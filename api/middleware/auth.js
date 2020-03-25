@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {Role} = require('../models/index');
+const {Role} = require('../database/models/index');
 
 function roleAuth(key) {
     return async (req, res, next) => {

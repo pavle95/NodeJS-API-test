@@ -1,5 +1,5 @@
-const {validate, toString} = require('../models/advert');
-const {User, Advert, Tag, AdvertTag} = require('../models/index');
+const {validate, toString} = require('../database/models/advert');
+const {User, Advert, Tag, AdvertTag} = require('../database/models/index');
 const {Op} = require('sequelize');
 
 

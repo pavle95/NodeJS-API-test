@@ -1,5 +1,5 @@
-const {validate, validateSearchQuery} = require('../models/company');
-const {User, Company} = require('../models/index');
+const {validate, validateSearchQuery} = require('../database/models/company');
+const {user, company} = require('../database/models/index');
 
 exports.update = async (req, res) => {
     try {
@@ -26,7 +26,8 @@ exports.update = async (req, res) => {
 
 exports.getAll = async(req, res) => {
     try {
-        const companies = await Company.findAll();
+        console.log('a');
+        const companies = await company.findAll();
         if(!companies) res.status(404).json({success:false,message:'No results'});
         res.status(200).json({success:true,data:{companies}});
     } catch (e) {

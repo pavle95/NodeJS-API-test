@@ -1,5 +1,5 @@
-const {validateSignup, validateLogin} = require('../models/user');
-const {User, Company, Applicant, Role} = require('../models/index');
+const {validateSignup, validateLogin} = require('../database/models/user');
+const {User, Company, Applicant, Role} = require('../database/models/index');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 //const jwtKey = process.env.jwtKey;

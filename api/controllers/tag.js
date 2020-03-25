@@ -1,5 +1,5 @@
-const {validate} = require('../models/tag');
-const {Tag} = require('../models/index');
+const {validate} = require('../database/models/tag');
+const {Tag} = require('../database/models/index');
 
 exports.create = async (req, res) => {
     try {
