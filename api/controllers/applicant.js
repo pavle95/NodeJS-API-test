@@ -62,4 +62,10 @@ exports.search = async (req, res) => {
         res.status(500).json({success:false,message:e.message});
     }
 }
+
+// exports.apply = async (req, res) => {
+//     try {
+        
+//     }
+// }
     

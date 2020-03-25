@@ -7,6 +7,8 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'test';
 const config = envConfig[env];
 
+const { snakeToPascal }= require('../helper/formatting');
+
 const db = {};
 
 const sequelize = new Sequelize(config.database, config.username, config.password, {
@@ -24,7 +26,7 @@ fs
   })
   .forEach(file => {
     const model = sequelize['import'](path.join(__dirname, file));
-    db[model.name] = model;
+    db[snakeToPascal(model.name)] = model;
   });
 
 Object.keys(db).forEach(modelName => {

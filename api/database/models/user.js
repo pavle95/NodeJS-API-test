@@ -33,15 +33,15 @@ module.exports = (sequelize) => {
         freezeTableName: true
     });
     User.associate = function(models) {
-        User.belongsTo(models.role, {
+        User.belongsTo(models.Role, {
             foreignKey: 'role_id',
             as: 'user'
         });
-        User.hasOne(models.company, {
+        User.hasOne(models.Company, {
             foreignKey: 'user_id',
             as: 'company'
         });
-        User.hasOne(models.applicant, {
+        User.hasOne(models.Applicant, {
             foreignKey: 'user_id',
             as: 'applicant'
         });

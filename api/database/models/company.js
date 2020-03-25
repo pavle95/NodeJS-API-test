@@ -41,11 +41,11 @@ module.exports = (sequelize) => {
         freezeTableName: true
     });
     Company.associate = function(models) {
-        Company.hasMany(models.advert, {
+        Company.hasMany(models.Advert, {
             foreignKey: 'company_id', 
             as: 'adverts'
         });
-        Company.belongsTo(models.user, {
+        Company.belongsTo(models.User, {
             foreignKey: 'user_id', 
             as: 'user'
         });

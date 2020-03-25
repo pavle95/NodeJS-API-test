@@ -34,13 +34,14 @@ module.exports = (sequelize) => {
         freezeTableName: true
     });
     Advert.associate = function(models) {
-        Advert.belongsToMany(models.tag, {
-            through: models.advert_tag, 
+        console.log(models);
+        Advert.belongsToMany(models.Tag, {
+            through: models.AdvertTag, 
             foreignKey: 'advert_id', 
             as: 'tags'
         });
-        Advert.belongsToMany(models.applicant, {
-            through: models.applicant_advert, 
+        Advert.belongsToMany(models.Applicant, {
+            through: models.ApplicantAdvert, 
             foreignKey: 'advert_id', 
             as: 'adverts'
         });
