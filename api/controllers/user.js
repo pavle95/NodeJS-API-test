@@ -1,4 +1,4 @@
-const {validateSignup, validateLogin} = require('../database/models/user');
+const {validateSignup, validateLogin} = require('../validation/user');
 const {User, Company, Applicant, Role} = require('../database/models/index');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -54,6 +54,7 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
+        console.log(validateLogin);
         const {error} = validateLogin(req.body);
         if(error) return res.status(400).json({success:false,message:error.details[0].message});
     

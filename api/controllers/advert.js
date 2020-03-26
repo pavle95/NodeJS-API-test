@@ -1,4 +1,4 @@
-const {validate, toString} = require('../database/models/advert');
+const {validateAdvert} = require('../validation/advert');
 const {User, Advert, Tag, AdvertTag} = require('../database/models/index');
 const {Op} = require('sequelize');
 
@@ -6,7 +6,7 @@ const {Op} = require('sequelize');
 
 exports.create = async (req, res) => {
     try {
-        const { error } = validate(req.body);
+        const { error } = validateAdvert(req.body);
         if (error) return res.status(400).json({success:false,message:error.details[0].message});
 
         const user = await User.findOne({ where: { id: req.user.id }});
@@ -15,15 +15,12 @@ exports.create = async (req, res) => {
         const company = await user.getCompany();
         let advert = new Advert({
             company_id: company.id,
-            title: req.body.title,
-            description: req.body.description,
-            from: req.body.from,
-            to: req.body.to,
+            ...req.body
         });
         await advert.save();
         
         const tags = await Tag.findAll({where:{id: req.body.tags}})
-        console.log(tags);
+
         tags.forEach(async tag => {
             let advertTag = new AdvertTag({
                 advert_id: advert.id,
@@ -67,6 +64,17 @@ exports.getById = async (req, res) => {
         if (!advert) return res.status(404).json({success:false,message:'No results.'});
         res.status(200).json({success:true,data:advert});
     } catch(e) {
+        res.status(500).json(e.message);
+    }
+}
+
+exports.getApplicants = async (req, res) => {
+    try {
+        const advert = req.advert;
+        const applicants = await advert.getApplicants();
+        if(!applicants) return res.status(404).json({success:false,message:'No results.'});
+        res.status(200).json({success:true, data:applicants});
+    } catch {
         res.status(500).json(e.message);
     }
 }

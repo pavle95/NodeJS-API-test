@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const Joi = require('joi');
 
 module.exports = (sequelize) => {
     const User = sequelize.define('user', {
@@ -48,25 +47,3 @@ module.exports = (sequelize) => {
     };
     return User;
 }
-
-
-function validateUser(user) {
-    const schema = {
-        username: Joi.string().min(6).max(100).required(),
-        password: Joi.string().min(6).max(100).required(),
-        email: Joi.string().min(6).max(100).required().email(),
-        role_id: Joi.number().required()
-    };
-    return Joi.validate(user, schema);
-}
-
-function validateUserLogin(req) {
-    const schema = {
-        password: Joi.string().min(6).max(100).required(),
-        email: Joi.string().min(6).max(100).required().email(),
-    };
-    return Joi.validate(req, schema);
-}
-
-exports.validateSignup = validateUser;
-exports.validateLogin = validateUserLogin;

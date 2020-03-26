@@ -1,5 +1,5 @@
-const {validate, validateSearchQuery} = require('../database/models/company');
-const {user, company} = require('../database/models/index');
+const {validate, validateSearchQuery} = require('../validation/company');
+const {User, Company} = require('../database/models/index');
 
 exports.update = async (req, res) => {
     try {
@@ -10,11 +10,15 @@ exports.update = async (req, res) => {
 
         let company = await user.getCompany();
 
-        company.name = req.body.name;
-        company.no_employees = req.body.no_employees;
-        company.category = req.body.category;
-        company.working_time = req.body.working_time;
-        company.website = req.body.website;
+        company = {
+            company,
+            ...req.body
+        }
+        // company.name = req.body.name;
+        // company.no_employees = req.body.no_employees;
+        // company.category = req.body.category;
+        // company.working_time = req.body.working_time;
+        // company.website = req.body.website;
 
         await company.save();
         res.status(200).json({success:true,message:'Company updated successfully.'});
@@ -27,7 +31,7 @@ exports.update = async (req, res) => {
 exports.getAll = async(req, res) => {
     try {
         console.log('a');
-        const companies = await company.findAll();
+        const companies = await Company.findAll();
         if(!companies) res.status(404).json({success:false,message:'No results'});
         res.status(200).json({success:true,data:{companies}});
     } catch (e) {

@@ -1,5 +1,5 @@
-const {validateApplicant, validateSearchQuery} = require('../database/models/applicant');
-const {User, Applicant} = require('../database/models/index');
+const {validateApplicant, validateSearchQuery} = require('../validation/applicant');
+const {User, Applicant, ApplicantAdvert, Advert} = require('../database/models/index');
 const client = require('../redis/redis');
 
 exports.update = async (req, res) => {
@@ -10,11 +10,15 @@ exports.update = async (req, res) => {
         const user = await User.findOne({ where: { id: req.user.id } });
 
         let applicant = await user.getApplicant();
-        applicant.first_name = req.body.first_name;
-        applicant.last_name = req.body.last_name;
-        applicant.bio = req.body.bio;
-        applicant.category = req.body.category;
-        applicant.portfolio = req.body.portfolio;
+        applicant = {
+            applicant,
+            ...req.body
+        };
+        // applicant.first_name = req.body.first_name;
+        // applicant.last_name = req.body.last_name;
+        // applicant.bio = req.body.bio;
+        // applicant.category = req.body.category;
+        // applicant.portfolio = req.body.portfolio;
 
         client.hmset(`applicant:${applicant.id}`, applicant.get({plain:true}));
 
@@ -63,9 +67,28 @@ exports.search = async (req, res) => {
     }
 }
 
-// exports.apply = async (req, res) => {
-//     try {
-        
-//     }
-// }
+exports.apply = async (req, res) => {
+    try {
+        const advert = await Advert.findOne({ where: { id: req.params.id } });
+        if (!advert) return res.status(400).send({ success: false, message: 'No advert with given id.' });
+        const user = await User.findOne(
+            {
+                where: { id: req.user.id },
+                // include: [{ model: Tag, as: "tags", through: { attributes: [] } }],
+                // raw: false
+            }
+        );
+        let applicant = await user.getApplicant();
+            console.log(applicant.id);
+        const applicantAdvert = new ApplicantAdvert({
+            applicant_id: applicant.id,
+            advert_id: req.params.id
+        });
+            console.log(applicantAdvert);
+        applicantAdvert.save();
+        res.status(200).json({ success: true, message: 'Successfully aplied for a job.' });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
+    }
+}
     

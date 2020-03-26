@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
             field: 'applicant_id',
             type: Sequelize.INTEGER,
         },
-        tag_id: {
+        advert_id: {
             field: 'advert_id',
             type: Sequelize.INTEGER
         }

@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const Joi = require('joi');
+
 
 module.exports = (sequelize) => {
     const Tag = sequelize.define('tag', {
@@ -27,13 +27,3 @@ module.exports = (sequelize) => {
     };
     return Tag;
 }
-
-
-function validate(tag) {
-    const schema = {
-        name: Joi.string().min(2).max(100).required(),
-    };
-    return Joi.validate(tag, schema);
-}
-
-exports.validate = validate;

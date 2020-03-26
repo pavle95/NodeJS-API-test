@@ -9,5 +9,6 @@ router.put('/', roleAuth('applicant'), ApplicantController.update);
 router.get('/', ApplicantController.getAll);
 router.get('/:id', checkCache('applicant'), ApplicantController.getById);
 router.post('/search/', ApplicantController.search);
+router.post('/advert/:id', roleAuth('applicant'), ApplicantController.apply);
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const Joi = require('joi');
 
 module.exports = (sequelize) => {
     const Advert = sequelize.define('advert', {
@@ -43,23 +42,8 @@ module.exports = (sequelize) => {
         Advert.belongsToMany(models.Applicant, {
             through: models.ApplicantAdvert, 
             foreignKey: 'advert_id', 
-            as: 'adverts'
+            as: 'applicants'
         });
     };
     return Advert
 }
-
-
-function validate(advert) {
-    const schema = {
-        title: Joi.string().min(2).max(100).required(),
-        description: Joi.string().min(2).max(100).required(),
-        from: Joi.date().required(),
-        to: Joi.date().greater(Joi.ref('from')).required(),
-        tags: Joi.array().required()
-    };
-    return Joi.validate(advert, schema);
-}
-
-exports.validate = validate;
-
