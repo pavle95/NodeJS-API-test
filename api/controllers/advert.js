@@ -1,5 +1,5 @@
 const {validateAdvert} = require('../validation/advert');
-const {User, Advert, Tag, AdvertTag} = require('../database/models/index');
+const {User, Advert, Tag, AdvertTag, ApplicantAdvert, Chat} = require('../database/models/index');
 const {Op} = require('sequelize');
 
 
@@ -74,7 +74,27 @@ exports.getApplicants = async (req, res) => {
         const applicants = await advert.getApplicants();
         if(!applicants) return res.status(404).json({success:false,message:'No results.'});
         res.status(200).json({success:true, data:applicants});
-    } catch {
+    } catch(e) {
+        res.status(500).json(e.message);
+    }
+}
+
+exports.approveApplicant = async (req, res) => {
+    try {
+        let applicantAdvert = await ApplicantAdvert.findOne({ where: {advert_id: req.advert.id, applicant_id: req.params.applicant_id}});
+        if (!applicantAdvert) return res.status(400).json({success:true, message: 'Applicant has not applied for this position.'});
+        applicantAdvert.approved = true;
+        await applicantAdvert.save();
+        //
+        const chat = new Chat({
+            company_id: req.company.id,
+            applicant_id: req.params.applicant_id
+        });
+
+        await chat.save();
+
+        res.status(200).json({success:true, message: 'Applicant approved.'});
+    } catch(e) {
         res.status(500).json(e.message);
     }
 }

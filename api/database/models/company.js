@@ -48,6 +48,10 @@ module.exports = (sequelize) => {
             foreignKey: 'user_id', 
             as: 'user'
         });
+        Company.hasMany(models.Chat, {
+            foreignKey: 'company_id',
+            as: 'chats'
+        });
     };
     return Company;
 }

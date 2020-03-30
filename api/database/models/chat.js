@@ -1,29 +1,30 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-    const ApplicantAdvert = sequelize.define('applicant_advert', {
+    const Chat = sequelize.define('chat', {
         id: {
             field: 'id', 
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        applicant_id: {
-            field: 'applicant_id',
-            type: Sequelize.INTEGER,
-        },
-        advert_id: {
-            field: 'advert_id',
+        company_id: {
+            field: 'company_id',
             type: Sequelize.INTEGER
         },
-        approved: {
-            field: 'approved',
-            type: Sequelize.BOOLEAN,
-            defaultValue: false
+        applicant_id: {
+            field: 'applicant_id',
+            type: Sequelize.INTEGER
         }
     },{
         timestamps: false,
         freezeTableName: true
     });
-    return ApplicantAdvert;
+    Chat.associate = function(models) {
+        Chat.hasMany(models.Message, {
+            foreignKey: 'chat_id',
+            as: 'messages'
+        });
+    };
+    return Chat;
 }

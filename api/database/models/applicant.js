@@ -49,6 +49,10 @@ module.exports = (sequelize) => {
             foreignKey: 'applicant_id', 
             as: 'adverts'
         });
+        Applicant.hasMany(models.Chat, {
+            foreignKey: 'applicant_id',
+            as: 'chats'
+        });
     };
     return Applicant;
 }
